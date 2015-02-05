@@ -87,7 +87,7 @@ func main() {
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenglProfile, glfw.OpenglCoreProfile)
 	glfw.WindowHint(glfw.OpenglForwardCompatible, glfw.True) // needed for macs
-	window, err := glfw.CreateWindow(width, height, "PCB Viewer", nil, nil)
+	window, err := glfw.CreateWindow(width, height, "GL Paths", nil, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return
