@@ -177,8 +177,8 @@ func main() {
 	shape_map[2] = &shape{&mymath.Point{250.0, 550.0}, 0.0, 1.0, 0.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
 	shape_map[3] = &shape{&mymath.Point{600.0, 300.0}, 0.0, 0.0, 1.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
 	shape_map[4] = &shape{&mymath.Point{600.0, 500.0}, 1.0, 1.0, 0.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
-	shape_map[5] = &shape{&mymath.Point{800.0, 100.0}, 0.0, 1.0, 1.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
-	shape_map[6] = &shape{&mymath.Point{350.0, 250.0}, 1.0, 0.0, 1.0, 1.0, bez_strip_id, bez_path_id, 15, 0}
+	shape_map[5] = &shape{&mymath.Point{800.0, 100.0}, 0.0, 1.0, 1.0, 0.75, circle_strip_id, circle_path_id, 25, 0}
+	shape_map[6] = &shape{&mymath.Point{350.0, 250.0}, 1.0, 0.0, 1.0, 0.75, bez_strip_id, bez_path_id, 15, 0}
 
 	//add shapes to spacial cache
 	for id, shape := range shape_map {
