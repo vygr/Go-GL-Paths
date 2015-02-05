@@ -159,9 +159,9 @@ func main() {
 	//add bezier path and strip
 	bez_path_id := dlist.Create_path()
 	dlist.Add_bezier(bez_path_id,
-		&mymath.Point{900.0, 0.0},
-		&mymath.Point{0.0, 700.0},
-		&mymath.Point{900.0, 700.0},
+		&mymath.Point{500.0, 0.0},
+		&mymath.Point{0.0, 500.0},
+		&mymath.Point{500.0, 500.0},
 		1.0)
 	bez_strip_id := dlist.Create_path_strip(bez_path_id, 15, 3, 1, 16)
 
@@ -174,10 +174,11 @@ func main() {
 	shape_map := map[int]*shape{}
 	shape_map[0] = &shape{&mymath.Point{25.0, 25.0}, 1.0, 1.0, 1.0, 1.0, bez_strip_id, bez_path_id, 15, 0}
 	shape_map[1] = &shape{&mymath.Point{200.0, 300.0}, 1.0, 0.0, 0.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
-	shape_map[2] = &shape{&mymath.Point{250.0, 550.0}, 1.0, 1.0, 0.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
-	shape_map[3] = &shape{&mymath.Point{600.0, 300.0}, 1.0, 0.0, 1.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
-	shape_map[4] = &shape{&mymath.Point{600.0, 500.0}, 0.0, 1.0, 1.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
-	shape_map[5] = &shape{&mymath.Point{800.0, 100.0}, 0.0, 0.0, 1.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
+	shape_map[2] = &shape{&mymath.Point{250.0, 550.0}, 0.0, 1.0, 0.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
+	shape_map[3] = &shape{&mymath.Point{600.0, 300.0}, 0.0, 0.0, 1.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
+	shape_map[4] = &shape{&mymath.Point{600.0, 500.0}, 1.0, 1.0, 0.0, 1.0, stroke_strip_id, stroke_path_id, 10, 0}
+	shape_map[5] = &shape{&mymath.Point{800.0, 100.0}, 0.0, 1.0, 1.0, 1.0, circle_strip_id, circle_path_id, 25, 0}
+	shape_map[6] = &shape{&mymath.Point{350.0, 250.0}, 1.0, 0.0, 1.0, 1.0, bez_strip_id, bez_path_id, 15, 0}
 
 	//add shapes to spacial cache
 	for id, shape := range shape_map {
