@@ -20,12 +20,14 @@ import (
 //////////////
 
 type Dlist struct {
-	layer  *layer.Layer
-	width  int
-	height int
-	scale  int
-	paths  []*mymath.Points
-	strips []*mymath.Points
+	layer         *layer.Layer
+	width         int
+	height        int
+	scale         int
+	paths         map[int]*mymath.Points
+	strips        map[int]*mymath.Points
+	next_path_id  int
+	next_strip_id int
 }
 
 ////////////////
@@ -47,16 +49,21 @@ func (self *Dlist) Get_strip(id int) *mymath.Points {
 }
 
 func (self *Dlist) Create_path() int {
-	self.paths = append(self.paths, &mymath.Points{})
-	return len(self.paths) - 1
+	self.next_path_id++
+	self.paths[self.next_path_id] = &mymath.Points{}
+	return self.next_path_id
+}
+
+func (self *Dlist) Delete_path(id int) {
+	delete(self.paths, id)
 }
 
 func (self *Dlist) Add_rel_path(id int, points *mymath.Points) {
+	path := *self.paths[id]
 	rx := float32(0.0)
 	ry := float32(0.0)
 	ex := float32(0.0)
 	ey := float32(0.0)
-	path := *self.paths[id]
 	if len(path) != 0 {
 		epp := path[len(path)-1]
 		ep := *epp
@@ -77,10 +84,10 @@ func (self *Dlist) Add_rel_path(id int, points *mymath.Points) {
 }
 
 func (self *Dlist) Add_abs_path(id int, pointsp *mymath.Points) {
+	path := *self.paths[id]
 	ex := float32(0.0)
 	ey := float32(0.0)
 	start := 0
-	path := *self.paths[id]
 	if len(path) != 0 {
 		epp := path[len(path)-1]
 		ep := *epp
@@ -100,10 +107,10 @@ func (self *Dlist) Add_abs_path(id int, pointsp *mymath.Points) {
 }
 
 func (self *Dlist) Add_bezier(id int, p2, p3, p4 *mymath.Point, dist float32) {
+	path := *self.paths[id]
 	ex := float32(0.0)
 	ey := float32(0.0)
 	start := 0
-	path := *self.paths[id]
 	if len(path) != 0 {
 		epp := path[len(path)-1]
 		ep := *epp
@@ -123,15 +130,21 @@ func (self *Dlist) Add_bezier(id int, p2, p3, p4 *mymath.Point, dist float32) {
 }
 
 func (self *Dlist) Create_path_strip(id int, radius float32, capstyle, joinstyle, resolution int) int {
+	self.next_strip_id++
 	points := mymath.Thicken_path_as_tristrip(self.paths[id], radius, capstyle, joinstyle, resolution)
-	self.strips = append(self.strips, points)
-	return len(self.strips) - 1
+	self.strips[self.next_strip_id] = points
+	return self.next_strip_id
 }
 
 func (self *Dlist) Create_circle_strip(center *mymath.Point, radius1, radius2 float32, resolution int) int {
+	self.next_strip_id++
 	points := mymath.Circle_as_tristrip(center, radius1, radius2, resolution)
-	self.strips = append(self.strips, points)
-	return len(self.strips) - 1
+	self.strips[self.next_strip_id] = points
+	return self.next_strip_id
+}
+
+func (self *Dlist) Delete_strip(id int) {
+	delete(self.strips, id)
 }
 
 func (self *Dlist) Add_collision_path(offset *mymath.Point, path_id int, radius, gap float32, id int) {
@@ -160,8 +173,12 @@ func (self *Dlist) init(width, height, scale int) {
 	self.width = width
 	self.height = height
 	self.scale = scale
-	cols := width/scale
-	rows := height/scale
-	self.layer = layer.Newlayer(cols + 1, rows + 1, 1.0/(float32(width)/float32(cols)), 1.0/(float32(height)/float32(rows)))
+	self.paths = map[int]*mymath.Points{}
+	self.strips = map[int]*mymath.Points{}
+	self.next_path_id = -1
+	self.next_strip_id = -1
+	cols := width / scale
+	rows := height / scale
+	self.layer = layer.Newlayer(cols+1, rows+1, 1.0/(float32(width)/float32(cols)), 1.0/(float32(height)/float32(rows)))
 	return
 }

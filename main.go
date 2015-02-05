@@ -131,7 +131,7 @@ func main() {
 	//create display list
 	dlist := dlist.Newdlist(width, height, 10)
 
-	//add stroke path and strip
+	//create stroke path and strip
 	stroke_path_id := dlist.Create_path()
 	dlist.Add_rel_path(stroke_path_id, &mymath.Points{
 		&mymath.Point{0.0, 100.0},
@@ -156,7 +156,7 @@ func main() {
 		1.0)
 	stroke_strip_id := dlist.Create_path_strip(stroke_path_id, 10, 3, 2, 16)
 
-	//add bezier path and strip
+	//create bezier path and strip
 	bez_path_id := dlist.Create_path()
 	dlist.Add_bezier(bez_path_id,
 		&mymath.Point{500.0, 0.0},
@@ -165,7 +165,7 @@ func main() {
 		1.0)
 	bez_strip_id := dlist.Create_path_strip(bez_path_id, 15, 3, 1, 16)
 
-	//add circle strip
+	//create circle path and strip
 	circle_path_id := dlist.Create_path()
 	dlist.Add_abs_path(circle_path_id, mymath.Circle_as_lines(&mymath.Point{0.0, 0.0}, 75.0, 64))
 	circle_strip_id := dlist.Create_circle_strip(&mymath.Point{0.0, 0.0}, 100.0, 50.0, 64)
@@ -180,9 +180,9 @@ func main() {
 	shape_map[5] = &shape{&mymath.Point{800.0, 100.0}, 0.0, 1.0, 1.0, 0.75, circle_strip_id, circle_path_id, 25, 0}
 	shape_map[6] = &shape{&mymath.Point{350.0, 250.0}, 1.0, 0.0, 1.0, 0.75, bez_strip_id, bez_path_id, 15, 0}
 
-	//add shapes to spacial cache
-	for id, shape := range shape_map {
-		dlist.Add_collision_path(shape.offset, shape.path_id, shape.radius, shape.gap, id)
+	//add shape paths to spacial cache
+	for shape_id, shape := range shape_map {
+		dlist.Add_collision_path(shape.offset, shape.path_id, shape.radius, shape.gap, shape_id)
 	}
 
 	mouse_shape_id := 0
